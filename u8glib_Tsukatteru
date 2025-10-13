@@ -1,0 +1,50 @@
+#include "U8glib.h"
+
+//U8GLIB_SSD1306_128X64 u8g(4, 5, 6, 7);
+U8GLIB_SSD1306_128X64 u8g(U8G_I2C_OPT_DEV_0 | U8G_I2C_OPT_NO_ACK | U8G_I2C_OPT_FAST);
+
+#define VOL  A0
+#define VMAX 1013
+int vol_val = 0;
+
+
+void setup() {
+  pinMode(VOL, INPUT);
+  u8g.setColorIndex(1);
+}
+
+
+void loop() {
+
+  vol_val = 0.9 * vol_val + 0.1 * analogRead(VOL);
+
+  byte val = map(vol_val, 0, VMAX, 0, 175);
+
+
+
+
+
+  u8g.firstPage();
+  do {
+
+u8g.drawPixel(40,40);
+
+    u8g.drawBox(5,1,29,5);
+    u8g.drawBox(35,1,29,5);
+    u8g.drawBox(65,1,29,5);
+    u8g.drawBox(95,1,29,5);
+    
+    u8g.drawBox(5,8,29,5);
+    u8g.drawBox(35,8,29,5);
+    u8g.drawBox(65,8,29,5);
+    u8g.drawBox(95,8,29,5);
+
+
+    u8g.drawBox(5,15,29,5);
+    u8g.drawBox(35,15,29,5);
+    u8g.drawBox(65,15,29,5);
+    u8g.drawBox(95,15,29,5);
+    u8g.drawBox(val, 60, 15, 5);
+
+  } while (u8g.nextPage());
+}
